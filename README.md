@@ -32,20 +32,53 @@ The **Block Matching and 3D filtering** (BM3D) algorithm works in two stages: **
 - Noisy and denoised images will be audimatically saved in dirrectory as {file_name.jpg}_noisy{sigma value}.jpg and {file_name.jpg}_denoised{sigma value}.jpg
 
 
-## How to use:
+# How to use:
+
 *I would love to add a front end to this project in the future, but for now, everything happens in the terminal:*
 
-```py
->>> import mypackage
->>> mypackage.do_stuff()
-'Oh yeah!'
-```
+ - once repo folder is downloaded, user can add any images they want to it, or use the ones already in the repo
+
+ - in the terminal, ensure python3 in installed then run
+ ```python3 bm3d_efficient.py```
+
+ - note: bm3d_pure.py was never intended to be run. without the help of the GPU or parellel programming, it is extremely slow. It has a run time of O((MN)^2W^2B^3/S^2) where MN is the number of pixels for the width and height of the image, W is the search window for finding simmilar blocks, B is block size, and S is block side length.
+
+ - The terminal will prompt the user for a file within the folder, a sigma value, and whether or not they'd like to apply AWGN to the image first before denoising:
+
+```Input an image: ```\
+```Input a sigma value (must be float): ```\
+```would you like to add additive white gaussian noise (AWGN) to your image first? (yes/no): ```\
+
+ - lets run through an example. I will start by inputting [mandrill.jpg](mandrill.jpg) to the terminal:
+
+ ```Input an image: mandrill.jpg```
+
+ ![example](mandrill.jpg)
+
+ - I will then input a sigma value 25.
+
+ ```Input a sigma value (must be float): ```
+
+ - I could just denoise this image dirrectly if it already have alot of AWGN, but it doesn't, so I will opt to add noise to see a notible difference before and after the algorithm works. 
+
+ - ```would you like to add additive white gaussian noise (AWGN) to your image first? (yes/no): yes```
+
+ - I will first get an image saved in the folder called [mandril_noisy_25.jpg](noisy_mandrill_25.jpg)
+
+ ![example](noisy_mandrill_25.jpg)
+
+ - Then I will get the denoised product, [mandril_denoised_25.jpg](denoised_mandrill_25.jpg)
+
+![example](denoised_mandrill_25.jpg)
 
 
-## 💭 Feedback and Contributing
 
-Add a link to the Discussions tab in your repo and invite users to open issues for bugs/feature requests.
+ - if any of the above prompts do not get back their expected values, the user will be prompted to try again.
 
-This is also a great place to invite others to contribute in any ways that make sense for your project. Point people to your DEVELOPMENT and/or CONTRIBUTING guides if you have them.
+
+
+## Feedback and Contributing
+
+Feel free to add feedback to my work or suggest changes on the repositorie's [discussion board](https://github.com/rovotta/CSC-364-Image-Processing-Final-Project/discussions)
 
 
