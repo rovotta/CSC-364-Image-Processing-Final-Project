@@ -74,9 +74,8 @@ The **Block Matching and 3D filtering** (BM3D) algorithm works in two stages: **
  - if any of the above prompts do not get back their expected values, the user will be prompted to try again.
 
 
-
 ## Feedback and Contributing
 
-Feel free to add feedback to my work or suggest changes on the repositorie's [discussion board](https://github.com/rovotta/CSC-364-Image-Processing-Final-Project/discussions)
+Thankyou for reading! Feel free to add feedback to my work or suggest changes on the repository's [discussion board](https://github.com/rovotta/CSC-364-Image-Processing-Final-Project/discussions)
 
 
