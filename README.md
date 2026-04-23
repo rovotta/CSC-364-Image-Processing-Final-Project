@@ -1,7 +1,7 @@
 # CSC-364-Image-Processing-Final-Project
-Python implementation of the BM3D image denoising algorithm (Dabov et al., 2007). Implements DCT/WHT transforms, block matching, 3D collaborative filtering with hard-thresholding and  Wiener filtering in two separate stages. Built for educational purposes to be presented at the [2026 Davidson College Verna Miller Case Symposium] (VOTTA BM3D 48x36inches academic poster Davidson (1).pdf).  
+Python implementation of the BM3D image denoising algorithm (Dabov et al., 2007). Implements DCT/WHT transforms, block matching, 3D collaborative filtering with hard-thresholding and  Wiener filtering in two separate stages. Built for educational purposes to be presented at the [2026 Davidson College Verna Miller Case Symposium](VOTTA_BM3D48x36inchesAcademicPosterDavidson.pdf) 
 
-# Required Packages:
+## Required Packages:
 
 ```pip install Pillow```
 
@@ -9,13 +9,13 @@ Python implementation of the BM3D image denoising algorithm (Dabov et al., 2007)
 
 > *Math and Random are standard python libraries. Pillow is for working with image pixels and numpy is for efficiency purposes.*
 
-# Important Files:
+## Important Files:
 
 [AWGN.py](AWGN.py) applies additive white gaussian noise to any image
 
-[bm3d_pure.py] (bm3d_pure.py) from-scratch implementation of algorithm (SLOW!!!!)
+[bm3d_pure.py](bm3d_pure.py) from-scratch implementation of algorithm (SLOW!!!!)
 
-[bm3d_efficient.py] (bm3d_efficient.py) adds numpy and multi parellel programming for practicality
+[bm3d_efficient.py](bm3d_efficient.py) adds numpy and multi parellel programming for practicality
 
 
 ## Algorithm Overview:
@@ -26,18 +26,13 @@ The **Block Matching and 3D filtering** (BM3D) algorithm works in two stages: **
 ## Features:
 
 - This project can be appllied to any gray-scale jpeg image
-- User can toggle sigma values, block sizes, hard threshold multipliers/values, and stepping values to optimize denoising results. 
-- User can denoise an image dirrectly, or apply ghite gaussian noise at an inputted sigma value
-- 
+- User can toggle sigma values, block sizes, hard threshold multipliers/values, and stepping values to optimize denoising results
+- User will be prompted for an jpg image file and a sigma value
+- Block size, allowed dissimilarity, hard thresholding values, and step sizes can be toggled in bm3d files  
+- Noisy and denoised images will be audimatically saved in dirrectory as {file_name.jpg}_noisy{sigma value}.jpg and {file_name.jpg}_denoised{sigma value}.jpg
 
 
-### ✍️ Authors
-
-Mention who you are and link to your GitHub or organization's website.
-
-
-## 🚀 Usage
-
+## How to use:
 *I would love to add a front end to this project in the future, but for now, everything happens in the terminal:*
 
 ```py
