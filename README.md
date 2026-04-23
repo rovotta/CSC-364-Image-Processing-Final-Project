@@ -20,23 +20,21 @@ Python implementation of the BM3D image denoising algorithm (Dabov et al., 2007)
 
 ## Algorithm Overview:
 
-The **Block Matching and 3D filtering** (BM3D) algorithm works in two stages: **first**, it groups mathematically similar image blocks (8x8 pixels default) into 3D groups, applies a separable 3D transform (2D discrete cosine + Walsh-Hadamard), and suppresses noisey pixels through hard thresholding to produce a basic estimate image. **second**, it refines that estimate using Wiener filtering for a more denoised final result. A pure python implementation with explainatory documentation and formulas is written to make every step of the algorithm transparent and approachable for educational purposes. It was built as my final project for my CSC-364 Image Processing class.
+The **Block Matching and 3D filtering** (BM3D) algorithm works in two stages: **first**, it groups mathematically similar image blocks (8x8 pixels default) into 3D groups, applies a separable 3D transform (2D discrete cosine + Walsh-Hadamard), and suppresses noisey pixels through hard thresholding to produce a basic estimate image. **second**, it refines that estimate using Wiener filtering for a more denoised final result. A pure python implementation with explainatory documentation and formulas is written to make every step of the algorithm transparent and approachable for educational purposes. It was built as my final project for my CSC-364 Image Processing class. You can learn more about the algorithm in [Image Denoising and Collaborative Filtering](BM3D_TIP_2007.pdf)
 
 
 ## Features:
 
-- This project can be appllied to any gray-scale jpeg image
-- User can toggle sigma values, block sizes, hard threshold multipliers/values, and stepping values to optimize denoising results
-- User will be prompted for an jpg image file and a sigma value
+- This implementation can be appllied to any gray-scale jpeg image
+- User will be prompted for a jpg image file and a sigma value for the gaussion curve
 - Block size, allowed dissimilarity, hard thresholding values, and step sizes can be toggled in bm3d files  
-- Noisy and denoised images will be audimatically saved in dirrectory as {file_name.jpg}_noisy{sigma value}.jpg and {file_name.jpg}_denoised{sigma value}.jpg
-
+- Noisy and denoised images will be automatically saved in dirrectory as {file_name.jpg}_noisy{sigma value}.jpg and {file_name.jpg}_denoised{sigma value}.jpg
 
 # How to use:
 
 *I would love to add a front end to this project in the future, but for now, everything happens in the terminal:*
 
- - once repo folder is downloaded, user can add any images they want to it, or use the ones already in the repo
+ - once repo folder is downloaded, the user can add any images they have downloaded to it, or they use the ones already in the repo
 
  - in the terminal, ensure python3 in installed then run
  ```python3 bm3d_efficient.py```
