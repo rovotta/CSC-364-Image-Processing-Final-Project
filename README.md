@@ -57,7 +57,7 @@ The **Block Matching and 3D filtering** (BM3D) algorithm works in two stages: **
 
  - I will then input a sigma value 25.
 
- ```Input a sigma value (must be float): ```
+ ```Input a sigma value (must be float): 25```
 
  - I could just denoise this image dirrectly if it already have alot of AWGN, but it doesn't, so I will opt to add noise to see a notible difference before and after the algorithm works. 
 
