@@ -5,7 +5,7 @@ Reference: Dabov et al., "Image Denoising by Sparse 3D Transform-Domain
            Collaborative Filtering", TIP 2007.
 Author: RV
 
-time spent: 03/31/2026 - 04/22/2026
+Time of implementation: 03/26/2026 - 04/22/2026
 """
 import math
 from PIL import Image
