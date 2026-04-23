@@ -6,6 +6,8 @@ Reference: Dabov et al., "Image Denoising by Sparse 3D Transform-Domain
 Author: RV
 
 Time of implementation: 03/26/2026 - 04/22/2026
+
+WARNING: this program will take 3-10 hours to run depending on file size
 """
 import math
 from PIL import Image
@@ -709,7 +711,7 @@ def main():
     
     name = im_file.rsplit(".",1)[0]
     M, N = im.size
-    
+
     # Pillow -> 2D float list
     image = []
     for v in range(N):
@@ -757,8 +759,6 @@ def main():
             for u in range(M):
                 denoised_img.putpixel((u, v), int(max(0, min(255, denoised[v][u]))))
         denoised_img.save(f"{name}_denoised_{SIGMA}.jpg")
-
-
     return
 
 if __name__ == "__main__":
