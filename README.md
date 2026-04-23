@@ -15,20 +15,21 @@ Python implementation of the BM3D image denoising algorithm (Dabov et al., 2007)
 
 [bm3d_pure.py](bm3d_pure.py) from-scratch implementation of algorithm (SLOW!!!!)
 
-[bm3d_efficient.py](bm3d_efficient.py) adds numpy and multi parellel programming for practicality
+[bm3d_efficient.py](bm3d_efficient.py) adds numpy and multi parallel programming for practicality
 
 
 ## Algorithm Overview:
 
-The **Block Matching and 3D filtering** (BM3D) algorithm works in two stages: **first**, it groups mathematically similar image blocks (8x8 pixels default) into 3D groups, applies a separable 3D transform (2D discrete cosine + Walsh-Hadamard), and suppresses noisey pixels through hard thresholding to produce a basic estimate image. **second**, it refines that estimate using Wiener filtering for a more denoised final result. A pure python implementation with explainatory documentation and formulas is written to make every step of the algorithm transparent and approachable for educational purposes. It was built as my final project for my CSC-364 Image Processing class. You can learn more about the algorithm in [Image Denoising and Collaborative Filtering](BM3D_TIP_2007.pdf)
+The **Block Matching and 3D filtering** (BM3D) algorithm works in two stages: **first**, it groups mathematically similar image blocks (8x8 pixels default) into 3D groups, applies a separable 3D transform (2D discrete cosine + Walsh-Hadamard), and suppresses noisy pixels through hard thresholding to produce a basic estimate image. **second**, it refines that estimate using Wiener filtering for a more denoised final result. A pure python implementation with explanatory documentation and formulas is written to make every step of the algorithm transparent and approachable for educational purposes. It was built as my final project for my CSC-364 Image Processing class. You can learn more about the algorithm in [Image Denoising and Collaborative Filtering](BM3D_TIP_2007.pdf)
 
 
 ## Features:
 
-- This implementation can be appllied to any gray-scale jpeg image
-- User will be prompted for a jpg image file and a sigma value for the gaussion curve
-- Block size, allowed dissimilarity, hard thresholding values, and step sizes can be toggled in bm3d files  
-- Noisy and denoised images will be automatically saved in dirrectory as {file_name.jpg}_noisy{sigma value}.jpg and {file_name.jpg}_denoised{sigma value}.jpg
+- This implementation can be applied to any gray-scale jpeg image
+- you can also input RGB images, but they will be converted to gray-scale through the program and the outputs will be gray scale
+- User will be prompted for a jpg image file and a sigma value for the gaussian curve
+- Block size, allowed dissimilarity, hard thresholding values, and step sizes can be toggled as global variables in bm3d python files below the main documentation  
+- Noisy and denoised images will be automatically saved in directory as {file_name.jpg}_noisy{sigma value}.jpg and {file_name.jpg}_denoised{sigma value}.jpg
 
 # How to use:
 
@@ -39,7 +40,7 @@ The **Block Matching and 3D filtering** (BM3D) algorithm works in two stages: **
  - in the terminal, ensure python3 in installed then run
  ```python3 bm3d_efficient.py```
 
- - note: bm3d_pure.py was never intended to be run. without the help of the GPU or parellel programming, it is extremely slow. It has a run time of O((MN)^2W^2B^3/S^2) where MN is the number of pixels for the width and height of the image, W is the search window for finding simmilar blocks, B is block size, and S is block side length.
+ - note: bm3d_pure.py was never intended to be run. without the help of the GPU or parellel programming, it is extremely slow. It has a run time of O((MN)^2W^2B^3/S^2) where MN is the number of pixels for the width and height of the image, W is the search window for finding similar blocks, B is block size, and S is block side length.
 
  - The terminal will prompt the user for a file within the folder, a sigma value, and whether or not they'd like to apply AWGN to the image first before denoising:
 
@@ -57,7 +58,7 @@ The **Block Matching and 3D filtering** (BM3D) algorithm works in two stages: **
 
  ```Input a sigma value (must be float): 25```
 
- - I could just denoise this image dirrectly if it already have alot of AWGN, but it doesn't, so I will opt to add noise to see a notible difference before and after the algorithm works. 
+ - I could just denoise this image directly if it already have a lot of AWGN, but it doesn't, so I will opt to add noise to see a notable difference before and after the algorithm works. 
 
  - ```would you like to add additive white gaussian noise (AWGN) to your image first? (yes/no): yes```
 
@@ -77,5 +78,6 @@ The **Block Matching and 3D filtering** (BM3D) algorithm works in two stages: **
 ## Feedback and Contributing
 
 Thankyou for reading! Feel free to add feedback to my work or suggest changes on the repository's [discussion board](https://github.com/rovotta/CSC-364-Image-Processing-Final-Project/discussions)
+
 
 
