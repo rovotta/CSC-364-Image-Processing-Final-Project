@@ -20,6 +20,7 @@ class AWGN:
 
     def __init__(self, sigma):
         self.sigma = sigma
+        self._rng = random.Random()
 
     def add_noise(self, im):
         """Add Gaussian noise to an image.
@@ -62,7 +63,7 @@ def main():
 
     for v in range(N):
         for u in range(M):
-            val = noisy[u][v]
+            val = noisy[v][u]
             if val < 0.0:
                 val = 0.0
                 out_pixel[u,v] = 0
@@ -70,9 +71,9 @@ def main():
                 val = 255
                 out_pixel[u,v] = 255
             else:
-                out_pixel = int(val)   
+                out_pixel[u,v] = int(val)   
 
-    out.save(f"{name}_awgn_{SIGMA}.jpg")
+    out.save(f"citroen_noisy_{SIGMA}.jpg")
 
     return
 

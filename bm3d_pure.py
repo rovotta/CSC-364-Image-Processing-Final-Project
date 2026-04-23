@@ -28,8 +28,6 @@ SEARCH_WIN = 39 # search window side length
 LAMBDA_HT = 2.7 # hard threshold multiplier
 LAMBDA_DIST = 2.5 # pre-filter threshold multiplier (distance)
 
-SIGMA = 25
-
 # 1-D Transforms
 
 def dct1d(x):
@@ -701,10 +699,17 @@ def bm3d(noisy_image, sigma):
 def main():
 
     # Load image
-    im = Image.open("mandrill.jpg").convert("L")
+    while True:
+        try:
+            im_file = input("Input an image: ")
+            im = Image.open(im_file).convert("L")
+            break
+        except FileNotFoundError:
+            print("Invalid input. Please input a valid file name in the folder: ")
+    
+    name = im_file.rsplit(".",1)[0]
     M, N = im.size
-    name = "mandrill"
-
+    
     # Pillow -> 2D float list
     image = []
     for v in range(N):
@@ -713,21 +718,46 @@ def main():
             row.append(float(im.getpixel((u, v))))
         image.append(row)
 
-    # Add noise
-    noisy = AWGN(SIGMA).apply(image)
-    noisy_img = Image.new('L', (M, N))
-    for v in range(N):
-        for u in range(M):
-            noisy_img.putpixel((u, v), int(max(0, min(255, noisy[v][u]))))
-    noisy_img.save(f"noisy_{name}_{SIGMA}.jpg")
+    # Add noise (optional)
+    while True:
+        try:
+            SIGMA = float(input("Input a sigma value (must be float): "))
+            break
+        except ValueError:
+            print("Invalid input. Please enter an float: ")
 
-    # Denoise
-    denoised = bm3d(noisy, SIGMA)
-    denoised_img = Image.new('L', (M, N))
-    for v in range(N):
-        for u in range(M):
-            denoised_img.putpixel((u, v), int(max(0, min(255, denoised[v][u]))))
-    denoised_img.save(f"denoised_{name}_{SIGMA}.jpg")
+    while True:
+        try:
+            choice = input("would you like to add additive white gaussian noise (AWGN) to your image first? (yes/no): ")
+            break
+        except ValueError:
+            print("Invalid input. Please enter yes or no: ")
+
+    if choice == "yes":
+
+        noisy = AWGN(SIGMA).add_noise(image)
+        noisy_img = Image.new('L', (M, N))
+        for v in range(N):
+            for u in range(M):
+                noisy_img.putpixel((u, v), int(max(0, min(255, noisy[v][u]))))
+        noisy_img.save(f"{name}_noisy_{SIGMA}.jpg")
+
+        # Denoise
+        denoised = bm3d(noisy, SIGMA)
+        denoised_img = Image.new('L', (M, N))
+        for v in range(N):
+            for u in range(M):
+                denoised_img.putpixel((u, v), int(max(0, min(255, denoised[v][u]))))
+        denoised_img.save(f"{name}_denoised_{SIGMA}.jpg")
+    else:
+        # Denoise
+        denoised = bm3d(image, SIGMA)
+        denoised_img = Image.new('L', (M, N))
+        for v in range(N):
+            for u in range(M):
+                denoised_img.putpixel((u, v), int(max(0, min(255, denoised[v][u]))))
+        denoised_img.save(f"{name}_denoised_{SIGMA}.jpg")
+
 
     return
 
