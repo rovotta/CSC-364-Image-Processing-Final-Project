@@ -31,17 +31,17 @@ The **Block Matching and 3D filtering** (BM3D) algorithm works in two stages: **
 - Noisy and denoised images will be automatically saved in directory as {file_name.jpg}_noisy{sigma value}.jpg and {file_name.jpg}_denoised{sigma value}.jpg
 -  below is all the global variables the user can toggle within the bm3d python files: 
 
- BLOCK_SIZE_1 -       Side length (number of pixels) of each patch in Stage 1
- MAX_GROUP_SIZE_1 -   Max number of similar blocks per 3D group in Stage 1
- TAU_MATCH_1 -        Max allowed dissimilarity between blocks in Stage 1 
- STEP_1 -             Sliding step between reference blocks in Stage 1   
- BLOCK_SIZE_2  -      Side length (px) of each patch in Stage 2                                          
- MAX_GROUP_SIZE_2 -   Max number of similar blocks per 3D group in Stage 2                               
- TAU_MATCH_2  -       Max allowed dissimilarity between blocks in Stage 2                                
- STEP_2 -             Sliding step between reference blocks in Stage 2                                   
- SEARCH_WIN -         Side length (px) of the search window used to find similar blocks                  
- LAMBDA_HT -          Hard-threshold multiplier — scales the threshold applied in Stage 1                
- LAMBDA_DIST  -       Pre-filter threshold multiplier for block distance in Stage 1                      
+ BLOCK_SIZE_1 -  Side length (number of pixels) of each patch in Stage 1
+ MAX_GROUP_SIZE_1 - Max number of similar blocks per 3D group in Stage 1
+ TAU_MATCH_1 - Max allowed dissimilarity between blocks in Stage 1 
+ STEP_1 - Sliding step between reference blocks in Stage 1   
+ BLOCK_SIZE_2  - Side length (number of pixels) of each patch in Stage 2                                          
+ MAX_GROUP_SIZE_2 - Max number of similar blocks per 3D group in Stage 2                               
+ TAU_MATCH_2  - Max allowed dissimilarity between blocks in Stage 2                                
+ STEP_2 - Sliding step between reference blocks in Stage 2                                   
+ SEARCH_WIN - Side length (number of pixels) of the search window used to find similar blocks                  
+ LAMBDA_HT - Hard-threshold multiplier — scales the threshold applied in Stage 1                
+ LAMBDA_DIST  - Pre-filter threshold multiplier for block distance in Stage 1                      
 
 # How to use:
 
