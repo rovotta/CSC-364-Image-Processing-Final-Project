@@ -28,8 +28,34 @@ The **Block Matching and 3D filtering** (BM3D) algorithm works in two stages: **
 - This implementation can be applied to any gray-scale jpeg image
 - you can also input RGB images, but they will be converted to gray-scale through the program and the outputs will be gray scale
 - User will be prompted for a jpg image file and a sigma value for the gaussian curve
-- Block size, allowed dissimilarity, hard thresholding values, and step sizes can be toggled as global variables in bm3d python files below the main documentation  
+- A chart of global variables is featured below that the user can toggle in bm3d python files below the main documentation  
 - Noisy and denoised images will be automatically saved in directory as {file_name.jpg}_noisy{sigma value}.jpg and {file_name.jpg}_denoised{sigma value}.jpg
+
+┌──────────────────┬─────────┬────────────────────────────────────────────────────────────────────────────────────┐
+│     Variable     │ Default │                                    Description                                     │
+├──────────────────┼─────────┼────────────────────────────────────────────────────────────────────────────────────┤
+│ BLOCK_SIZE_1     │ 8       │ Side length (px) of each patch in Stage 1                                          │
+├──────────────────┼─────────┼────────────────────────────────────────────────────────────────────────────────────┤
+│ MAX_GROUP_SIZE_1 │ 16      │ Max number of similar blocks per 3D group in Stage 1                               │
+├──────────────────┼─────────┼────────────────────────────────────────────────────────────────────────────────────┤
+│ TAU_MATCH_1      │ 2500    │ Max allowed dissimilarity between blocks in Stage 1 (higher = more blocks grouped) │
+├──────────────────┼─────────┼────────────────────────────────────────────────────────────────────────────────────┤
+│ STEP_1           │ 3       │ Sliding step between reference blocks in Stage 1 (lower = slower, more thorough)   │
+├──────────────────┼─────────┼────────────────────────────────────────────────────────────────────────────────────┤
+│ BLOCK_SIZE_2     │ 8       │ Side length (px) of each patch in Stage 2                                          │
+├──────────────────┼─────────┼────────────────────────────────────────────────────────────────────────────────────┤
+│ MAX_GROUP_SIZE_2 │ 32      │ Max number of similar blocks per 3D group in Stage 2                               │
+├──────────────────┼─────────┼────────────────────────────────────────────────────────────────────────────────────┤
+│ TAU_MATCH_2      │ 400     │ Max allowed dissimilarity between blocks in Stage 2                                │
+├──────────────────┼─────────┼────────────────────────────────────────────────────────────────────────────────────┤
+│ STEP_2           │ 3       │ Sliding step between reference blocks in Stage 2                                   │
+├──────────────────┼─────────┼────────────────────────────────────────────────────────────────────────────────────┤
+│ SEARCH_WIN       │ 39      │ Side length (px) of the search window used to find similar blocks                  │
+├──────────────────┼─────────┼────────────────────────────────────────────────────────────────────────────────────┤
+│ LAMBDA_HT        │ 2.7     │ Hard-threshold multiplier — scales the threshold applied in Stage 1                │
+├──────────────────┼─────────┼────────────────────────────────────────────────────────────────────────────────────┤
+│ LAMBDA_DIST      │ 2.5     │ Pre-filter threshold multiplier for block distance in Stage 1                      │
+└──────────────────┴─────────┴────────────────────────────────────────────────────────────────────────────────────┘
 
 # How to use:
 
