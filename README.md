@@ -31,17 +31,17 @@ The **Block Matching and 3D filtering** (BM3D) algorithm works in two stages: **
 - Noisy and denoised images will be automatically saved in directory as {file_name.jpg}_noisy{sigma value}.jpg and {file_name.jpg}_denoised{sigma value}.jpg
 -  below is all the global variables the user can toggle within the bm3d python files: 
 
- BLOCK_SIZE_1 - Side length (number of pixels) of each patch in Stage 1
- MAX_GROUP_SIZE_1 - Max number of similar blocks per 3D group in Stage 1
- TAU_MATCH_1 -  Max allowed dissimilarity between blocks in Stage 1 
- STEP_1 - Sliding step between reference blocks in Stage 1   
- BLOCK_SIZE_2  - Side length (px) of each patch in Stage 2                                          
- MAX_GROUP_SIZE_2 - Max number of similar blocks per 3D group in Stage 2                               
- TAU_MATCH_2  - Max allowed dissimilarity between blocks in Stage 2                                
- STEP_2 - Sliding step between reference blocks in Stage 2                                   
- SEARCH_WIN -  Side length (px) of the search window used to find similar blocks                  
- LAMBDA_HT - Hard-threshold multiplier — scales the threshold applied in Stage 1                
- LAMBDA_DIST  - Pre-filter threshold multiplier for block distance in Stage 1                      
+ BLOCK_SIZE_1 -       Side length (number of pixels) of each patch in Stage 1
+ MAX_GROUP_SIZE_1 -   Max number of similar blocks per 3D group in Stage 1
+ TAU_MATCH_1 -        Max allowed dissimilarity between blocks in Stage 1 
+ STEP_1 -             Sliding step between reference blocks in Stage 1   
+ BLOCK_SIZE_2  -      Side length (px) of each patch in Stage 2                                          
+ MAX_GROUP_SIZE_2 -   Max number of similar blocks per 3D group in Stage 2                               
+ TAU_MATCH_2  -       Max allowed dissimilarity between blocks in Stage 2                                
+ STEP_2 -             Sliding step between reference blocks in Stage 2                                   
+ SEARCH_WIN -         Side length (px) of the search window used to find similar blocks                  
+ LAMBDA_HT -          Hard-threshold multiplier — scales the threshold applied in Stage 1                
+ LAMBDA_DIST  -       Pre-filter threshold multiplier for block distance in Stage 1                      
 
 # How to use:
 
@@ -86,10 +86,17 @@ The **Block Matching and 3D filtering** (BM3D) algorithm works in two stages: **
 
  - if any of the above prompts do not get back their expected values, the user will be prompted to try again.
 
-
 ## Feedback and Contributing
 
 Thankyou for reading! Feel free to add feedback to my work or suggest changes on the repository's [discussion board](https://github.com/rovotta/CSC-364-Image-Processing-Final-Project/discussions)
+
+## Citations:
+
+Dabov, K., Foi, A., Katkovnik, V., \& Egiazarian, K. (2007). Image denoising by sparse 3-D transform-domain collaborative filtering.*IEEE Transactions on Image Processing, 16*(8), 2080--2095.
+
+
+Hambretch, F. (2013). 2.4 BM3D for Image Denoising | Image Analysis Class 2013. Retrieved from https://www.youtube.com/watch?v=BlDl6M0go-c
+
 
 
 
