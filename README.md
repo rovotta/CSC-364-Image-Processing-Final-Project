@@ -52,13 +52,13 @@ The **Block Matching and 3D filtering** (BM3D) algorithm works in two stages: **
  - in the terminal, ensure python3 in installed then run
  ```python3 bm3d_efficient.py```
 
- - note: bm3d_pure.py was never intended to be run. without the help of the GPU or parellel programming, it is extremely slow. It has a run time of O((MN)^2W^2B^3/S^2) where MN is the number of pixels for the width and height of the image, W is the search window for finding similar blocks, B is block size, and S is block side length.
+ - note: bm3d_pure.py was never intended to be run. without the help of the GPU or parellel programming, it is extremely slow. It has a run time of $$O((MN)^2W^2\frac{B^3}{S^2})$$ where MN is the number of pixels for the width and height of the image, W is the search window for finding similar blocks, B is block size, and S the steping amount.
 
  - The terminal will prompt the user for a file within the folder, a sigma value, and whether or not they'd like to apply AWGN to the image first before denoising:
 
-```Input an image: ```\
-```Input a sigma value (must be float): ```\
-```would you like to add additive white gaussian noise (AWGN) to your image first? (yes/no): ```\
+```Input an image: ```
+```Input a sigma value (must be float): ```
+```would you like to add additive white gaussian noise (AWGN) to your image first? (yes/no): ```
 
  - lets run through an example. I will start by inputting [mandrill.jpg](mandrill.jpg) to the terminal:
 
