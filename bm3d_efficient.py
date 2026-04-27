@@ -1,6 +1,8 @@
 """
 Implementation of BM3D image denoising algorithm.
-Pure, intro-level hand coded python only for educational purposes
+pure python processes pixels one at a time with 2D for loops. The goal is to replace those
+loops with NumPy vectorized array operations, which process all pixels simultaneously via.
+
 Reference: Dabov et al., "Image Denoising by Sparse 3D Transform-Domain
            Collaborative Filtering", TIP 2007.
 Author: RV
