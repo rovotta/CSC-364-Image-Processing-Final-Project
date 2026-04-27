@@ -3,6 +3,9 @@ Implementation of BM3D image denoising algorithm.
 pure python processes pixels one at a time with 2D for loops. The goal is to replace those
 loops with NumPy vectorized array operations, which process all pixels simultaneously via.
 
+out of the scope of a intro-level image processing class. code produced with the help of
+generative AI (Sonet 4.7)
+
 Reference: Dabov et al., "Image Denoising by Sparse 3D Transform-Domain
            Collaborative Filtering", TIP 2007.
 Author: RV
@@ -579,12 +582,10 @@ def bm3d_stage1(noisy, sigma):
                 list of blocks in the spatial domain, same shape.'''
             aggregate(numerator, denominator, filtered_group, positions, 1.0/ht[1], BLOCK_SIZE_1)
 
-    for v in range(N):
-        for u in range(M):
-            if denominator[v][u] != 0.0:
-                basic_estimate[v][u] = numerator[v][u] / denominator[v][u]
-            else:
-                basic_estimate[v][u] = noisy[v][u]
+    num = np.array(numerator)
+    den = np.array(denominator)
+    basic_estimate = np.where(den != 0.0, num / den, np.array(noisy)).tolist
+    # np.where evaluates all N×M pixels in one C-level call instead of looping in Python.
 
     return basic_estimate
 
