@@ -429,14 +429,13 @@ def bm3d_stage1(noisy, sigma):
     Returns:
         basic_estimate - 2D list of floats, same shape as noisy.
     """
+    noisy = np.array(noisy) # must be numpy array to work with extract_block and aggregate
 
     N, M = len(noisy), len(noisy[0])
 
     numerator   = np.zeros((N, M)) # must be numpy arrays
     denominator = np.zeros((N, M))
-    basic_estimate = []
-    for i in range(N):
-        basic_estimate.append([0.0] * M)
+    basic_estimate = np.zeros((N,M))
 
     for ref_row in range(0, N - BLOCK_SIZE_1 + 1, STEP_1):
         for ref_col in range(0, M - BLOCK_SIZE_1 + 1, STEP_1):
@@ -463,7 +462,7 @@ def bm3d_stage1(noisy, sigma):
 
     num = np.array(numerator)
     den = np.array(denominator)
-    basic_estimate = np.where(den != 0.0, num / den, np.array(noisy)).tolist
+    basic_estimate = np.where(den != 0.0, num / den, np.array(noisy)).tolist()
     # np.where evaluates all N×M pixels in one C-level call instead of looping in Python.
 
     return basic_estimate
@@ -491,17 +490,10 @@ def bm3d_stage2(noisy, basic_estimate, sigma):
 
     N, M = len(noisy), len(noisy[0])
 
+    numerator   = np.zeros((N, M))
+    denominator = np.zeros((N, M))
+    final_estimate = np.zeros((N,M))
     
-    numerator = []
-    for i in range(N):
-        numerator.append([0.0] * M )
-    denominator = []
-    for i in range(N):
-        denominator.append([0.0] * M)
-    final_estimate = []
-    for i in range(N):
-        final_estimate.append([0.0] * M)
-
     for ref_row in range(0, N - BLOCK_SIZE_2 + 1, STEP_2):
         for ref_col in range(0, M - BLOCK_SIZE_2 + 1, STEP_2):
 
@@ -527,7 +519,7 @@ def bm3d_stage2(noisy, basic_estimate, sigma):
 
     num = np.array(numerator)
     den = np.array(denominator)
-    final_estimate = np.where(den != 0.0, num / den, np.array(basic_estimate)).tolist
+    final_estimate = np.where(den != 0.0, num / den, np.array(basic_estimate)).tolist()
     return final_estimate
 
 
