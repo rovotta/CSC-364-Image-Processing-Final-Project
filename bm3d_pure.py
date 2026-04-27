@@ -173,7 +173,7 @@ def extract_block(im, row, col, block_size):
     """Extract a square block from the image at a given position.
 
     Parameters:
-        image - 2D list of floats (grayscale image).
+        im - 2D list of floats (grayscale image).
         row - top-left row index of the block.
         col - top-left column index of the block.
         block_size - side length of the square block.
@@ -250,7 +250,7 @@ def group_match(im, ref_row, ref_col, block_size, search_win, max_group_size, ta
         S_xR = { x in X : d(Z_xR, Z_x) <= tau_match}
 
     parameters:
-        image - 2D list of floats.
+        im - 2D list of floats.
         ref_row - top-left row of the reference block.
         ref_col - top-left column of the reference block.
         block_size - side length of each block.
@@ -296,13 +296,13 @@ def group_match(im, ref_row, ref_col, block_size, search_win, max_group_size, ta
     #Keep only candidates with dissimilarity <= tau_match, sorted best-first
     candidates.sort(key=lambda x: x[0])
     ''''
-    lambda x: x[0] is an anonymous function that takes one argument x, a single tuple,
-    and returns x[0] the first element disim. For each tuple in the list, 
-    Python calls lambda to get a sorting key, then ranks tuples by that key ascending
+    lambda x: x[0] is a function that takes a single tuple,
+    and returns x[0], the first element of our touple, disim. For each tuple in the list, 
+    lambda gets a sorting key, then ranks tuples by that key ascending
     ex.
-    lambda (4.2, 3, 5) returns 4.2
-    lambda (0.0, 2, 2) returns 0.0
-    lambda (1.1, 4, 4) returns 1.1
+    lambda(4.2, 3, 5) returns 4.2
+    lambda(0.0, 2, 2) returns 0.0
+    lambda(1.1, 4, 4) returns 1.1
     sorted as:
     [(0.0, 2, 2), (1.1, 4, 4), (4.2, 3, 5)]
     '''

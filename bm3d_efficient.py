@@ -123,23 +123,17 @@ def extract_block(im, row, col, block_size):
     """Extract a square block from the image at a given position.
 
     Parameters:
-        image - 2D list of floats (grayscale image).
+        im - 2D list of floats (grayscale image).
         row - top-left row index of the block.
         col - top-left column index of the block.
         block_size - side length of the square block.
 
+    this numpy implementation requires im to be a numpy array!!!
+        
     Returns:
         list of lists of floats, block_size, block_size size
     """
-    result = [] #8x8 image
-    for i in range(block_size):
-        result.append([0.0]*block_size)
-
-    for v in range(row, row + block_size,1):
-        for u in range(col, col + block_size,1):
-            result[v - row][u - col] = im[v][u]
-
-    return result
+    return im[row:row+block_size, col:col+block_size]
 
 def block_dissimilarity(ref_t, cand_t, sigma, lambda_dist, block_size):
     """calculate the normalised dissimilarity between two pre-transformed blocks. 
@@ -355,31 +349,10 @@ def hard_threshold(coeffs, threshold):
         n_nonzero - number of surviving (non-zero) coefficients; used to
                     compute the aggregation weight w^ht_xR = 1 / n_nonzero.
     """
-    num_blocks, block_sl = len(coeffs), len(coeffs[0])
-
-
-    thresholded = []
-    for block in range(num_blocks):
-        temp = []
-        for i in range(block_sl):
-            temp.append([0.0] * block_sl)
-        thresholded.append(temp)
-    n_nonzero = 0
-
-    for block in range(num_blocks):
-        for v in range(block_sl):
-            for u in range(block_sl):
-                if abs(coeffs[block][u][v]) >= threshold:
-                    thresholded[block][u][v] = coeffs[block][u][v]
-                    n_nonzero += 1
-                #else:
-                #   already 0.0
-
-    if n_nonzero == 0:
-        n_nonzero = 1
-        # avoids ZeroDivisionError if all coefficients are below threshold
-
-    return thresholded, n_nonzero
+    arr = np.array(coeffs)                                                                                                
+    thresholded = np.where(np.abs(arr) >= threshold, arr, 0.0)
+    n_nonzero = int(np.count_nonzero(thresholded))                                                                          
+    return thresholded, max(n_nonzero, 1) 
 
 def wiener_filter(coeffs_noisy, coeffs_basic, sigma):
     """Apply Wiener filtering to noisy 3D transform coefficients (Stage 2).
