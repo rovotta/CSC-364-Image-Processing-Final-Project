@@ -646,13 +646,9 @@ def bm3d_stage2(noisy, basic_estimate, sigma):
 
             aggregate(numerator, denominator, filtered_group, positions, weights_l2/sigma**2, BLOCK_SIZE_2)
 
-    for v in range(N):
-        for u in range(M):
-            if denominator[v][u] != 0.0:
-                final_estimate[v][u] = numerator[v][u] / denominator[v][u]
-            else:
-                final_estimate[v][u] = basic_estimate[v][u]
-
+    num = np.array(numerator)
+    den = np.array(denominator)
+    final_estimate = np.where(den != 0.0, num / den, np.array(basic_estimate)).tolist
     return final_estimate
 
 
