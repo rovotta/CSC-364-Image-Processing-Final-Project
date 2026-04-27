@@ -12,6 +12,7 @@ WARNING: this program will take 3-10 hours to run depending on file size
 import math
 from PIL import Image
 from AWGN import AWGN
+import numpy as np
 
 # Stage 1 parameters
 BLOCK_SIZE_1 = 8 # block side length
@@ -196,18 +197,7 @@ def block_dissimilarity(ref_t, cand_t, sigma, lambda_dist, block_size):
     Zero out coefficients below the pre-filter threshold before
     comparing (hard thresholding at lambda_dist * sigma).
 
-        d(Z_xR, Z_x) = ||T'_2D(Z_xR) - T'_2D(Z_x)||^2 / N1^2
-
-        this uses Parseval's Theorem: The total energy of signal calculated
-        by summing its euclidian quared amplitudes in the time domain equals
-        the total engery calulated in the frequency domain.
-
-    example of low dissimilarity:
-        ref_block has all pixel values at 100.0 and cand_block has pixel
-        values all at 102.0, their dissimilarity would be 4.0
-    example of high dissimilarity:
-        ref_block has all pixel values at 0.0 and cand_block has pixel
-        values all at 200.0, their dissimilarity would be 40,000
+    instead of a 2D for loop structure, uses numpy to vectorize the calculations
 
     Parameters:
         ref_t - pre-computed dct2d of the reference patch Z_xR.
@@ -221,22 +211,10 @@ def block_dissimilarity(ref_t, cand_t, sigma, lambda_dist, block_size):
     """
 
     ht = lambda_dist * sigma #hard thresholing: chicken in the egg paradox
-
-    total = 0.0
-    for i in range(block_size):
-        for j in range(block_size):
-            if abs(ref_t[i][j]) > ht:
-                ref = ref_t[i][j]
-            else:
-                ref = 0.0
-            if abs(cand_t[i][j]) > ht:
-                cand = cand_t[i][j]
-            else:
-                cand = 0.0
-            total += (ref - cand) ** 2
-    n_dissimilarity = total / (block_size**2)
-
-    return n_dissimilarity
+    ref_a  = np.where(np.abs(ref_t)  > ht, ref_t,  0.0)
+    cand_a = np.where(np.abs(cand_t) > ht, cand_t, 0.0)
+    return float(np.sum((ref_a - cand_a) ** 2)) / block_size ** 2
+    
 
 # Step One: Grouping
 
