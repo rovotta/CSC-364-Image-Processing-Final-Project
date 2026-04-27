@@ -103,23 +103,7 @@ def dct2d(block):
     Returns:
         list of lists of floats
     """
-    N, M = len(block), len(block[0])
-    temp = []
-    for i in range(N):
-        temp.append(dct1d(block[i]))
-
-    result = []
-    for i in range(N):
-        result.append([0.0] * M)
-
-    for j in range(M):                                                                                                    
-      col_vals = []                                 
-      for i in range(N):
-          col_vals.append(temp[i][j])  # collect the j-th value from each row
-      col = dct1d(col_vals)                                                    
-      for i in range(N):
-          result[i][j] = col[i]                        
-    return result 
+    return dctn(np.array(block), norm='ortho')
 
 def idct2d(block):
     """2D inverse DCT on a block.
@@ -131,21 +115,7 @@ def idct2d(block):
     Returns:
         list of lists of floats, same shape.
     """
-    N, M = len(block), len(block[0])                                                                                                 
-    temp = []
-    for i in range(N):
-        temp.append([0.0] * M)
-    for j in range(M):                                                                                                    
-        col_vals = []                                                                                                     
-        for i in range(N):
-            col_vals.append(block[i][j])                                                            
-        col = idct1d(col_vals)
-        for i in range(N):                                                                                                
-            temp[i][j] = col[i]
-    result = []
-    for i in range(N):
-        result.append(idct1d(temp[i]))
-    return result
+    return idctn(np.array(block), norm='ortho')
 
 #helpers
 
