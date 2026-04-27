@@ -374,42 +374,12 @@ def wiener_filter(coeffs_noisy, coeffs_basic, sigma):
         weights - scalar W.W used for the aggregation weight
                     w^wie_xR = weights_l2 / sigma^2.
     """
-    num_blocks, block_sl = len(coeffs_noisy), len(coeffs_noisy[0])
-
-    filtered = []
-    for i in range(num_blocks):
-        temp = []
-        for j in range(block_sl):
-            temp.append([0.0] * block_sl)
-        filtered.append(temp)
-
-    weights_l2 = 0.0
-
-    for block in range(num_blocks):
-        for v in range(block_sl):
-            for u in range(block_sl):
-                ''' sigma_u_sq = (Y_basic_k)**2 - sigma**2)
-                This estimates the true signal power at coefficient k.
-                The basic estimate contains signal + extra noise, so
-                subtract out the noise variance sigma**2.'''
-                b = coeffs_basic[block][u][v] # Y_basic_k, the basic coefficient
-                sigma_u_sq = b**2 - sigma**2 # *(Y_basic_k)**2 - sigma**2
-                # how much of this coefficient is signal versus noise?
-                if sigma_u_sq < 0:
-                    sigma_u_sq = 0 #ensure Y_basic_k positive
-                # compute shrinkage weight
-                if sigma_u_sq == 0:
-                    W = 0
-                else:
-                    W = sigma_u_sq / (sigma_u_sq + sigma**2) # W_k = sigma_u_k**2 / (sigma_u_k**2 + sigma**2)
-                    '''When signal power sigma_u_sq is large relative to noise sigma**2,
-                    W = 1 (keep the coefficient). When signal power is zero, W = 0 (kill the coefficient).'''
-                # store the filtered coefficient
-                filtered[block][u][v] = W * coeffs_noisy[block][u][v]
-                '''coeff_basic only provided the weight. The actual
-                data being filtered is the coeff_noisy.'''
-                weights_l2 += W**2 # accumulates ||W||**2 (weight norm) across all coefficients in the group
-
+    noisy = np.array(coeffs_noisy)                                                                                          
+    basic = np.array(coeffs_basic)                                                                                          
+    sigma_u_sq = np.maximum(basic**2 - sigma**2, 0.0)
+    W = np.where(sigma_u_sq > 0, sigma_u_sq / (sigma_u_sq + sigma**2), 0.0)                                                 
+    filtered = W * noisy                                                                                                    
+    weights_l2 = float(np.sum(W ** 2))                                                                                        
     return filtered, weights_l2
 
 # step Four: Aggregation
@@ -420,6 +390,8 @@ def aggregate(numerator, denominator, filtered_group, positions, weight, block_s
     Aggregation formula:
         y_hat(x) = sigma_{xR} sigma__{xm ing S_xR}  w_xR * Y_hat^xR_xm(x) /
                sigma__{xR} sigma__{xm in S_xR}  w_xR * 1_{x in patch(xm)}
+    
+    This requires numerator and denominator to be numpy arrays!!!
 
     parameters:
         numerator - 2D list of floats - weighted-sum buffer.
@@ -431,15 +403,9 @@ def aggregate(numerator, denominator, filtered_group, positions, weight, block_s
     returns:
         none
     """
-    block_idx = 0                                
-    for pos in positions:
-        row = pos[0]                                                                                                      
-        col = pos[1]
-        for v in range(block_size):                                                                                       
-            for u in range(block_size):
-                numerator[row + v][col + u]   += weight * filtered_group[block_idx][v][u]
-                denominator[row + v][col + u] += weight                                                                   
-        block_idx += 1
+    for k, (row, col) in enumerate(positions):                                                                              
+          numerator[row:row + block_size, col:col + block_size]   += weight * filtered_group[k]                                   
+          denominator[row:row + block_size, col:col + block_size] += weight 
 
 # Stage Orchestrators
 
@@ -466,12 +432,8 @@ def bm3d_stage1(noisy, sigma):
 
     N, M = len(noisy), len(noisy[0])
 
-    numerator = []
-    for i in range(N):
-        numerator.append([0.0] * M )
-    denominator = []
-    for i in range(N):
-        denominator.append([0.0] * M)
+    numerator   = np.zeros((N, M)) # must be numpy arrays
+    denominator = np.zeros((N, M))
     basic_estimate = []
     for i in range(N):
         basic_estimate.append([0.0] * M)
@@ -497,7 +459,7 @@ def bm3d_stage1(noisy, sigma):
             filtered_group = i_transform_3d(ht[0])
             '''Returns:
                 list of blocks in the spatial domain, same shape.'''
-            aggregate(numerator, denominator, filtered_group, positions, 1.0/ht[1], BLOCK_SIZE_1)
+            aggregate(numerator, denominator, filtered_group, positions, 1.0 / ht[1], BLOCK_SIZE_1)
 
     num = np.array(numerator)
     den = np.array(denominator)
