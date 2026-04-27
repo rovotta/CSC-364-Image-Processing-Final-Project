@@ -1,43 +1,40 @@
 """
 Implementation of BM3D image denoising algorithm.
-builds off of bm3d_pure.py by adding numpy and concurent and parellel programing
-to increase speed and efficiency of the function with the help of carefully 
-inspected AI generation.
+Pure, intro-level hand coded python only for educational purposes
 Reference: Dabov et al., "Image Denoising by Sparse 3D Transform-Domain
            Collaborative Filtering", TIP 2007.
 Author: RV
 
-Time of Implementaion: 04/22/2026 - 05/13/2026
+Time of implementation: 03/26/2026 - 04/22/2026
+
+WARNING: this program will take 3-10 hours to run depending on file size
 """
 import math
 from PIL import Image
 from AWGN import AWGN
 
 # Stage 1 parameters
-BLOCK_SIZE_1 = 8 # N1-block side length
-MAX_GROUP_SIZE_1 = 16 # N_g - max blocks per group
-TAU_MATCH_1 = 2500 # transpose^ht_match - max allowed dissimilarity
+BLOCK_SIZE_1 = 8 # block side length
+MAX_GROUP_SIZE_1 = 16 # max blocks per group
+TAU_MATCH_1 = 2500 # max allowed dissimilarity
 STEP_1 = 3 # sliding step for reference blocks
 
 # Stage 2 Global Variables
-BLOCK_SIZE_2 = 8 # N1 - block side length
-MAX_GROUP_SIZE_2 = 32 # N_g - max blocks per group
-TAU_MATCH_2 = 400 # transpose^wiener_match - max allowed dissimilarity (Stage 2)
-STEP_2 = 3 # sliding step for reference blocks (Stage 2)
+BLOCK_SIZE_2 = 8 # block side length
+MAX_GROUP_SIZE_2 = 32 # max blocks per group
+TAU_MATCH_2 = 400 # max allowed dissimilarity
+STEP_2 = 3 # sliding step for reference blocks
 
 # Global Variables used in both stages
-SEARCH_WIN = 39 # Ns - search neighbourhood side length
-LAMBDA_HT = 2.7 # lamda_ht - hard threshold multiplier
-LAMBDA_DIST = 2.5 # lamda_dist - pre-filter threshold multiplier (distance)
-
-SIGMA = 25
+SEARCH_WIN = 39 # search window side length
+LAMBDA_HT = 2.7 # hard threshold multiplier
+LAMBDA_DIST = 2.5 # pre-filter threshold multiplier (distance)
 
 # 1-D Transforms
 
 def dct1d(x):
-    """Discrete Cosine Transform 1 dimenstional. (type 2 orthonormal)
-    applied row-wise then column-wise to decorrelate spacial content
-    of each block
+    """Discrete Cosine Transform 1 dimenstional.
+    Applies row-wise then column-wise
     X[k] = w(k) * sigma_{n=0}^{N-1} x[n] * cos(pi(2n+1)k / 2N)
         where  w(0) = sqrt(1/N),  w(k>0) = sqrt(2/N)
 
@@ -61,8 +58,8 @@ def dct1d(x):
     return X
 
 def idct1d(X):
-    """Inverse of dct1d. Reconstructs pixel values from DCT coefficients after thresholding
-    Formula: x[n] = simga_{k=0}^{N-1} w(k) * X[k] * cos(pi(2n+1)k / 2N)
+    """Inverse of dct1d. Reconstructs pixel values from DCT coefficients after thresholding.
+    x[n] = simga_{k=0}^{N-1} w(k) * X[k] * cos(pi(2n+1)k / 2N)
 
     Parameters:
         X - list of floats, length N.
@@ -188,8 +185,8 @@ def extract_block(im, row, col, block_size):
     for i in range(block_size):
         result.append([0.0]*block_size)
 
-    for v in range(row, row+block_size,1):
-        for u in range(col, col+block_size,1):
+    for v in range(row, row + block_size,1):
+        for u in range(col, col + block_size,1):
             result[v - row][u - col] = im[v][u]
 
     return result
@@ -263,7 +260,7 @@ def group_match(im, ref_row, ref_col, block_size, search_win, max_group_size, ta
         sigma - noise standard deviation.
         lambda_dist - pre-filtering threshold multiplier for distance.
 
-    Returns:
+    Returns touple:
         group - list of blocks, each block a list of lists of floats,
             shape num_matches, block_size, block_size.
         positions - list of row, col tuples for each block in the group,
@@ -378,7 +375,7 @@ def i_transform_3d(coeffs):
 
     parameters:
         coeffs - list of blocks of transform coefficients,
-                shape (num_blocks, block_size, block_size).
+                shape num_blocks, block_size, block_size.
 
     Returns:
         list of blocks in the spatial domain, same shape.
@@ -433,7 +430,13 @@ def hard_threshold(coeffs, threshold):
     """
     num_blocks, block_sl = len(coeffs), len(coeffs[0])
 
-    thresholded = [[[0.0] * block_sl for _ in range(block_sl)] for _ in range(num_blocks)]
+
+    thresholded = []
+    for block in range(num_blocks):
+        temp = []
+        for i in range(block_sl):
+            temp.append([0.0] * block_sl)
+        thresholded.append(temp)
     n_nonzero = 0
 
     for block in range(num_blocks):
@@ -525,6 +528,8 @@ def aggregate(numerator, denominator, filtered_group, positions, weight, block_s
         positions - list of (u, v) tuples, one per block.
         weight - scalar weight for this group (w^ht_xR or w^wie_xR).
         block_size - side length of each block.
+    returns:
+        none
     """
     block_idx = 0                                
     for pos in positions:
@@ -542,21 +547,21 @@ def bm3d_stage1(noisy, sigma):
     """Stage 1: basic estimate via collaborative hard-thresholding.
 
     Iterates over all reference block positions (stride = STEP_1):
-        1. group_match - find and stack similar blocks from `noisy`.
-        2. transform_3d - 3D transform the group (reuses cached DCTs from group_match).
-        3. hard_threshold - threshold at LAMBDA_HT * sigma.
-        4. inverse_transform_3d - back to spatial domain.
-        5. aggregate - accumulate weighted blocks directly into shared buffers.
+        1 - group_match - find and stack similar blocks from `noisy`.
+        2 - transform_3d - 3D transform the group (reuses cached DCTs from group_match).
+        3 - hard_threshold - threshold at LAMBDA_HT * sigma.
+        4 - inverse_transform_3d - back to spatial domain.
+        5 - aggregate - accumulate weighted blocks directly into shared buffers.
 
     Divides the numerator buffer by the denominator buffer to get the
     basic estimate.
 
     parameters:
-        noisy: 2D list of floats, noisy grayscale image, values in [0, 255].
-        sigma: estimated noise standard deviation.
+        noisy - 2D list of floats, noisy grayscale image, values in [0, 255].
+        sigma - estimated noise standard deviation.
 
     Returns:
-        basic_estimate: 2D list of floats, same shape as noisy.
+        basic_estimate - 2D list of floats, same shape as noisy.
     """
 
     N, M = len(noisy), len(noisy[0])
@@ -608,20 +613,20 @@ def bm3d_stage2(noisy, basic_estimate, sigma):
 
     Uses basic_estimate as a basic signal. Iterates over all reference
     block positions (stride = STEP_2):
-        1. group_match - find similar blocks using the basic estimate.
-        2. transform_3d - 3D transform both the noisy group and the basic group
-        3. wiener_filter - filter noisy coefficients with pilot-derived weights.
-        4. inverse_transform_3d - back to spatial domain.
-        5. aggregate - accumulate weighted blocks directly into shared buffers.
+        1 - group_match - find similar blocks using the basic estimate.
+        2 - transform_3d - 3D transform both the noisy group and the basic group
+        3 - wiener_filter - filter noisy coefficients with pilot-derived weights.
+        4 - inverse_transform_3d - back to spatial domain.
+        5 - aggregate - accumulate weighted blocks directly into shared buffers.
     Divides numerator by denominator to get the final estimate.
 
     parameters:
-        noisy:          2D list of floats, original noisy image.
-        basic_estimate: 2D list of floats from Stage 1.
-        sigma:          estimated noise standard deviation.
+        noisy - 2D list of floats, original noisy image.
+        basic_estimate - 2D list of floats from Stage 1.
+        sigma - estimated noise standard deviation.
 
     Returns:
-        final_estimate: 2D list of floats, same shape as noisy.
+        final_estimate - 2D list of floats, same shape as noisy.
     """
 
     N, M = len(noisy), len(noisy[0])
@@ -680,11 +685,11 @@ def bm3d(noisy_image, sigma):
     the final, higher-quality denoised result.
 
     parameters:
-        noisy_image: 2D list of floats (grayscale), values in [0, 255].
-        sigma:       estimated noise standard deviation.
+        noisy_image - 2D list of floats (grayscale), values in [0, 255].
+        sigma - estimated noise standard deviation.
 
     Returns:
-        denoised: 2D list of floats, same shape as noisy_image.
+        denoised - 2D list of floats, same shape as noisy_image.
     """
     basic_estimate = bm3d_stage1(noisy_image, sigma)
     # returns basic_estimate, a 2D list of floats, same shape as noisy.
@@ -696,9 +701,16 @@ def bm3d(noisy_image, sigma):
 def main():
 
     # Load image
-    im = Image.open("mandrill.jpg").convert("L")
+    while True:
+        try:
+            im_file = input("Input an image: ")
+            im = Image.open(im_file).convert("L")
+            break
+        except FileNotFoundError:
+            print("Invalid input. Please input a valid file name in the folder: ")
+    
+    name = im_file.rsplit(".",1)[0]
     M, N = im.size
-    name = "mandrill"
 
     # Pillow -> 2D float list
     image = []
@@ -708,22 +720,45 @@ def main():
             row.append(float(im.getpixel((u, v))))
         image.append(row)
 
-    # Add noise
-    noisy = AWGN(SIGMA).apply(image)
-    noisy_img = Image.new('L', (M, N))
-    for v in range(N):
-        for u in range(M):
-            noisy_img.putpixel((u, v), int(max(0, min(255, noisy[v][u]))))
-    noisy_img.save(f"noisy_{name}_{SIGMA}.jpg")
+    # Add noise (optional)
+    while True:
+        try:
+            SIGMA = float(input("Input a sigma value (must be float): "))
+            break
+        except ValueError:
+            print("Invalid input. Please enter an float: ")
 
-    # Denoise
-    denoised = bm3d(noisy, SIGMA)
-    denoised_img = Image.new('L', (M, N))
-    for v in range(N):
-        for u in range(M):
-            denoised_img.putpixel((u, v), int(max(0, min(255, denoised[v][u]))))
-    denoised_img.save(f"denoised_{name}_{SIGMA}.jpg")
+    while True:
+        try:
+            choice = input("would you like to add additive white gaussian noise (AWGN) to your image first? (yes/no): ")
+            break
+        except ValueError:
+            print("Invalid input. Please enter yes or no: ")
 
+    if choice == "yes":
+
+        noisy = AWGN(SIGMA).add_noise(image)
+        noisy_img = Image.new('L', (M, N))
+        for v in range(N):
+            for u in range(M):
+                noisy_img.putpixel((u, v), int(max(0, min(255, noisy[v][u]))))
+        noisy_img.save(f"{name}_noisy_{SIGMA}.jpg")
+
+        # Denoise
+        denoised = bm3d(noisy, SIGMA)
+        denoised_img = Image.new('L', (M, N))
+        for v in range(N):
+            for u in range(M):
+                denoised_img.putpixel((u, v), int(max(0, min(255, denoised[v][u]))))
+        denoised_img.save(f"{name}_denoised_{SIGMA}.jpg")
+    else:
+        # Denoise
+        denoised = bm3d(image, SIGMA)
+        denoised_img = Image.new('L', (M, N))
+        for v in range(N):
+            for u in range(M):
+                denoised_img.putpixel((u, v), int(max(0, min(255, denoised[v][u]))))
+        denoised_img.save(f"{name}_denoised_{SIGMA}.jpg")
     return
 
 if __name__ == "__main__":
