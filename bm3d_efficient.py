@@ -18,6 +18,8 @@ import math
 from PIL import Image
 from AWGN import AWGN
 import numpy as np
+from scipy.fft import dct, idct, dctn, idctn
+
 
 # Stage 1 parameters
 BLOCK_SIZE_1 = 8 # block side length
@@ -50,18 +52,7 @@ def dct1d(x):
     Returns:
         list of floats, same length.
     """
-    N = len(x)
-    X = []
-    for k in range(N):
-        s = 0
-        for n in range(N):
-            s += x[n] * math.cos(math.pi * (2 * n + 1) * k / (2 * N))
-        if k == 0:
-            w = math.sqrt(1.0 / N)
-        else:
-            w = math.sqrt(2.0 / N)
-        X.append(w * s)
-    return X
+    return dct(x, norm='ortho')
 
 def idct1d(X):
     """Inverse of dct1d. Reconstructs pixel values from DCT coefficients after thresholding.
@@ -73,14 +64,7 @@ def idct1d(X):
     Returns:
         list of floats
     """
-    N = len(X)
-    x = []
-    for n in range(N):
-        s = math.sqrt(1.0 / N) * X[0]
-        for k in range(1 , N):
-            s += math.sqrt(2.0 / N) * X[k] * math.cos(math.pi * (2 * n + 1) * k / (2 * N))
-        x.append(s)
-    return x
+    return idct(X, norm='ortho')
 
 def wht1d(x):
     """Walsh Hadamard Transform. Length of x must be a power of 2.
