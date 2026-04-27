@@ -560,13 +560,8 @@ def main():
     name = im_file.rsplit(".",1)[0]
     M, N = im.size
 
-    # Pillow -> 2D float list
-    image = []
-    for v in range(N):
-        row =[]
-        for u in range(M):
-            row.append(float(im.getpixel((u, v))))
-        image.append(row)
+    # Pillow -> np 2D float list
+    image = np.array(im, dtype=float)
 
     # Add noise (optional)
     while True:
@@ -587,9 +582,7 @@ def main():
 
         noisy = AWGN(SIGMA).add_noise(image)
         noisy_img = Image.new('L', (M, N))
-        for v in range(N):
-            for u in range(M):
-                noisy_img.putpixel((u, v), int(max(0, min(255, noisy[v][u]))))
+        noisy_img = Image.fromarray(np.clip(noisy, 0, 255).astype(np.uint8))
         noisy_img.save(f"{name}_noisy_{SIGMA}.jpg")
 
         # Denoise
