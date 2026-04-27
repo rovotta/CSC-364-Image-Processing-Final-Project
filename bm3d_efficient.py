@@ -19,7 +19,7 @@ from PIL import Image
 from AWGN import AWGN
 import numpy as np
 from scipy.fft import dct, idct, dctn, idctn
-
+from scipy.linalg import hadamard
 
 # Stage 1 parameters
 BLOCK_SIZE_1 = 8 # block side length
@@ -76,22 +76,12 @@ def wht1d(x):
     Returns:
         list of floats.
     """
-    N = len(x)
-    v = list(x)
-    h = 1
-    while h < N:
-        for i in range(0, N, h * 2):
-            for j in range(i, i + h):
-                a = v[j]
-                b = v[j + h]
-                v[j] = a + b
-                v[j + h] = a - b
-        h = h * 2
-    s = 1.0 / math.sqrt(N)
-    result = []                                                                                                           
-    for val in v:                                                                                                       
-        result.append(val * s)                                                                                            
-    return result
+    n = len(x)                                        
+    p = 1 << (n - 1).bit_length() # next power of 2                                                                    
+    x_pad = np.zeros(p)                                 
+    x_pad[:n] = x                                                                                                           
+    H = hadamard(p) / np.sqrt(p) # normalized Hadamard
+    return list(H @ x_pad)                                                                                            
 
 def iwht1d(X):
     """Inverse of wht1d. (IDENTICAL!!!)
