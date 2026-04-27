@@ -561,7 +561,7 @@ def main():
     M, N = im.size
 
     # Pillow -> np 2D float list
-    image = np.array(im, dtype=float)
+    image = np.asarray(im).astype(float)
 
     # Add noise (optional)
     while True:
