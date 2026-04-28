@@ -35,7 +35,8 @@ The **Block Matching and 3D filtering** (BM3D) algorithm works in two stages: **
 - you can also input RGB images, but they will be converted to gray-scale through the program and the outputs will be gray scale
 - User will be prompted for a jpg image file and a sigma value for the gaussian curve
 - Noisy and denoised images will be automatically saved in directory as {file_name.jpg}_noisy{sigma value}.jpg and {file_name.jpg}_denoised{sigma value}.jpg
--  below is all the global variables the user can toggle within the bm3d python files: 
+-  below is all the global variables the user can toggle within the bm3d python files:
+-  For a 512x512 pixel image, I could get the algorithm to run between 3 and 4 minutes on bm3d_efficent and 3 hours for bm3d_pure
 
  BLOCK_SIZE_1 -  Side length (number of pixels) of each patch in Stage 1\
  MAX_GROUP_SIZE_1 - Max number of similar blocks per 3D group in Stage 1\
