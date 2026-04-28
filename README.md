@@ -8,6 +8,12 @@ Python implementation of the BM3D image denoising algorithm (Dabov et al., 2007)
 ```pip install numpy```
 
 > *Math and Random are standard python libraries. Pillow is for working with image pixels and numpy is for efficiency purposes.*
+> ### additional Packages:
+>
+> ```import numpy as np```
+> ```from scipy.fft import dct, idct, dctn, idctn```
+> ```from scipy.linalg import hadamard```
+> numpy allows for all pixels to be operated on at once. dramatically increased runtime, scipy imports are all the transforms we need coded in C for increased speed.
 
 ## Important Files:
 
