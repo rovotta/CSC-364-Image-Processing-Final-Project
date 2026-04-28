@@ -80,13 +80,13 @@ The **Block Matching and 3D filtering** (BM3D) algorithm works in two stages: **
 
  - ```would you like to add additive white gaussian noise (AWGN) to your image first? (yes/no): yes```
 
- - I will first get an image saved in the folder called [mandril_noisy_25.jpg](noisy_mandrill_25.jpg)
+ - I will first get an image saved in the folder called [mandril_noisy_25.0.jpg](noisy_mandrill_25.jpg)
 
- ![example](mandrill_noisy_25.jpg)
+ ![example](mandrill_noisy_25.0.jpg)
 
- - Then I will get the denoised product, [mandril_denoised_25.jpg](denoised_mandrill_25.jpg)
+ - Then I will get the denoised product, [mandril_denoised_25.jpg](denoised_mandrill_25.0.jpg)
 
-![example](mandrill_denoised_25.jpg)
+![example](mandrill_denoised_25.0.jpg)
 
 
 
