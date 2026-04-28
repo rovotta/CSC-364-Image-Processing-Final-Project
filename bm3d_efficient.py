@@ -462,8 +462,8 @@ def bm3d_stage1(noisy, sigma):
 
     num = np.array(numerator)
     den = np.array(denominator)
-    basic_estimate = np.where(den != 0.0, num / den, np.array(noisy)).tolist()
-    # np.where evaluates all N×M pixels in one C-level call instead of looping in Python.
+    basic_estimate = np.array(noisy, dtype=float)
+    np.divide(num, den, out=basic_estimate, where=den != 0.0)
 
     return basic_estimate
 
@@ -519,7 +519,8 @@ def bm3d_stage2(noisy, basic_estimate, sigma):
 
     num = np.array(numerator)
     den = np.array(denominator)
-    final_estimate = np.where(den != 0.0, num / den, np.array(basic_estimate)).tolist()
+    final_estimate = np.array(basic_estimate, dtype=float)
+    np.divide(num, den, out=final_estimate, where=den != 0.0)
     return final_estimate
 
 
@@ -580,7 +581,7 @@ def main():
 
     if choice == "yes":
 
-        noisy = AWGN(SIGMA).add_noise(image)
+        noisy = np.array(AWGN(SIGMA).add_noise(image))
         noisy_img = Image.new('L', (M, N))
         noisy_img = Image.fromarray(np.clip(noisy, 0, 255).astype(np.uint8))
         noisy_img.save(f"{name}_noisy_{SIGMA}.jpg")
