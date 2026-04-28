@@ -8,11 +8,11 @@ Python implementation of the BM3D image denoising algorithm (Dabov et al., 2007)
 ```pip install numpy```
 
 > *Math and Random are standard python libraries. Pillow is for working with image pixels and numpy is for efficiency purposes.*
-> ### additional Packages:
->
-> ```import numpy as np```
-> ```from scipy.fft import dct, idct, dctn, idctn```
-> ```from scipy.linalg import hadamard```
+## additional Packages:
+
+ ```import numpy as np```\
+```from scipy.fft import dct, idct, dctn, idctn```\
+ ```from scipy.linalg import hadamard```\
 > numpy allows for all pixels to be operated on at once. dramatically increased runtime, scipy imports are all the transforms we need coded in C for increased speed.
 
 ## Important Files:
@@ -82,11 +82,11 @@ The **Block Matching and 3D filtering** (BM3D) algorithm works in two stages: **
 
  - I will first get an image saved in the folder called [mandril_noisy_25.jpg](noisy_mandrill_25.jpg)
 
- ![example](noisy_mandrill_25.jpg)
+ ![example](mandrill_noisy_25.jpg)
 
  - Then I will get the denoised product, [mandril_denoised_25.jpg](denoised_mandrill_25.jpg)
 
-![example](denoised_mandrill_25.jpg)
+![example](mandrill_denoised_25.jpg)
 
 
 
