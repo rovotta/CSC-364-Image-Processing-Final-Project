@@ -10,9 +10,11 @@ Python implementation of the BM3D image denoising algorithm (Dabov et al., 2007)
 > *Math and Random are standard python libraries. Pillow is for working with image pixels and numpy is for efficiency purposes.*
 ## additional Packages:
 
- ```import numpy as np```\
-```from scipy.fft import dct, idct, dctn, idctn```\
- ```from scipy.linalg import hadamard```\
+ ```import numpy as np```
+ 
+```from scipy.fft import dct, idct, dctn, idctn```
+
+ ```from scipy.linalg import hadamard```
 > numpy allows for all pixels to be operated on at once. dramatically increased runtime, scipy imports are all the transforms we need coded in C for increased speed.
 
 ## Important Files:
@@ -38,17 +40,30 @@ The **Block Matching and 3D filtering** (BM3D) algorithm works in two stages: **
 -  below is all the global variables the user can toggle within the bm3d python files:
 -  For a 512x512 pixel image, I could get the algorithm to run between 3 and 4 minutes on bm3d_efficent and 3 hours for bm3d_pure
 
- BLOCK_SIZE_1 -  Side length (number of pixels) of each patch in Stage 1\
- MAX_GROUP_SIZE_1 - Max number of similar blocks per 3D group in Stage 1\
- TAU_MATCH_1 - Max allowed dissimilarity between blocks in Stage 1\
- STEP_1 - Sliding step between reference blocks in Stage 1\
- BLOCK_SIZE_2  - Side length (number of pixels) of each patch in Stage 2\                                          
- MAX_GROUP_SIZE_2 - Max number of similar blocks per 3D group in Stage 2\                              
- TAU_MATCH_2  - Max allowed dissimilarity between blocks in Stage 2\
- STEP_2 - Sliding step between reference blocks in Stage 2\                                   
- SEARCH_WIN - Side length (number of pixels) of the search window used to find similar blocks\                  
- LAMBDA_HT - Hard-threshold multiplier — scales the threshold applied in Stage 1\                
- LAMBDA_DIST  - Pre-filter threshold multiplier for block distance in Stage 1\                      
+
+ __BLOCK_SIZE_1__ -  Side length (number of pixels) of each patch in Stage 1
+ 
+ __MAX_GROUP_SIZE_1__ - Max number of similar blocks per 3D group in Stage 1
+ 
+ __TAU_MATCH_1__ - Max allowed dissimilarity between blocks in Stage 1
+ 
+ __STEP_1__ - Sliding step between reference blocks in Stage 1
+ 
+ __BLOCK_SIZE_2__  - Side length (number of pixels) of each patch in Stage 2   
+ 
+ __MAX_GROUP_SIZE_2__ - Max number of similar blocks per 3D group in Stage 2    
+ 
+ __TAU_MATCH_2__  - Max allowed dissimilarity between blocks in Stage 2
+ 
+ __STEP_2__ - Sliding step between reference blocks in Stage 2                  
+ 
+ __SEARCH_WIN__ - Side length (number of pixels) of the search window used to find similar blocks       
+ 
+ __LAMBDA_HT__ - Hard-threshold multiplier — scales the threshold applied in Stage 1        
+ 
+ __LAMBDA_DIST__  - Pre-filter threshold multiplier for block distance in Stage 1           
+
+ 
 
 # How to use:
 
@@ -75,11 +90,11 @@ The **Block Matching and 3D filtering** (BM3D) algorithm works in two stages: **
 
  - I will then input a sigma value 25.
 
- ```Input a sigma value (must be float): 25```
+```Input a sigma value (must be float): 25```
 
  - I could just denoise this image directly if it already have a lot of AWGN, but it doesn't, so I will opt to add noise to see a notable difference before and after the algorithm works. 
 
- - ```would you like to add additive white gaussian noise (AWGN) to your image first? (yes/no): yes```
+```would you like to add additive white gaussian noise (AWGN) to your image first? (yes/no): yes```
 
  - I will first get an image saved in the folder called [mandril_noisy_25.0.jpg](noisy_mandrill_25.jpg)
 
