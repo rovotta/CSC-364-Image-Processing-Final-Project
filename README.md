@@ -119,7 +119,7 @@ guassian blur to limit some noise, but for images with an immense amount of nois
 
  - now let's say this image was corrupted, but we want to detect the car with canny edge detection:
 
-![example](citroen_noisy_25.jpg)
+![example](citroen_noisy_25.0.jpg)
 
  - using a canny edge strength filter, you can see it's hard to make out the car:
 
