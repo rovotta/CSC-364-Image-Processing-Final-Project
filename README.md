@@ -123,6 +123,7 @@ guassian blur to limit some noise, but for images with an immense amount of nois
 
  - using a canny edge strength filter, you can see it's hard to make out the car:
 
+![example](edge_stength_citroen_noisy.png)
 
 ## Feedback and Contributing
 
