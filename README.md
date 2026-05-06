@@ -108,6 +108,22 @@ The **Block Matching and 3D filtering** (BM3D) algorithm works in two stages: **
 
  - if any of the above prompts do not get back their expected values, the user will be prompted to try again.
 
+## Applications
+
+One of the most important applications of the program are it's uses in edge detection. Many Edge detection algorthms apply a small
+guassian blur to limit some noise, but for images with an immense amount of noise, our BM3D can make a huge difference.
+
+ - let's take this image of a citroen 2CV:
+
+![example](citroen.jpg)
+
+ - now let's say this image was corrupted, but we want to detect the car with canny edge detection:
+
+![example](citroen_noisy_25.jpg)
+
+ - using a canny edge strength filter, you can see it's hard to make out the car:
+
+
 ## Feedback and Contributing
 
 Thankyou for reading! Feel free to add feedback to my work or suggest changes on the repository's [discussion board](https://github.com/rovotta/CSC-364-Image-Processing-Final-Project/discussions)
