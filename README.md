@@ -125,6 +125,12 @@ guassian blur to limit some noise, but for images with an immense amount of nois
 
 ![example](edge_strength_citroen_noisy.png)
 
+- denoising and then runing the exact same edge detection filter, we can see the edges come out alot cleaner:
+
+![example](edge_strength_citroen_denoised.png)
+
+- there are alot of real-world implications for this in medical imaging, machine learning, and image forensics
+
 ## Feedback and Contributing
 
 Thankyou for reading! Feel free to add feedback to my work or suggest changes on the repository's [discussion board](https://github.com/rovotta/CSC-364-Image-Processing-Final-Project/discussions)
