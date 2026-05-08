@@ -117,11 +117,11 @@ guassian blur to limit some noise, but for images with an immense amount of nois
 
 ![example](citroen.jpg)
 
- - now let's say this image was corrupted, but we want to detect the car with canny edge detection:
+ - now let's say this image was corrupted, but we want to be able to find the the car with edge detection:
 
 ![example](citroen_noisy_25.0.jpg)
 
- - using a canny edge strength filter, you can see it's hard to make out the car:
+ - using a canny edge strength filter, you can see how it would be difficult for a compture to make out the car:
 
 ![example](edge_strength_citroen_noisy.png)
 
@@ -129,7 +129,7 @@ guassian blur to limit some noise, but for images with an immense amount of nois
 
 ![example](edge_strength_citroen_denoised.png)
 
-- there are alot of real-world implications for this in medical imaging, machine learning, and image forensics
+- there are many of real-world implications for this in medical imaging, machine learning, and computure vision
 
 ## Feedback and Contributing
 
